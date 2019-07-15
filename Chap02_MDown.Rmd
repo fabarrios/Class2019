@@ -1,0 +1,55 @@
+---
+title: "Example for loading data with read_csv and ploting some variables"
+author: "F.A. Barrios"
+date: "7/13/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+## Introduction
+
+We will start in the Chapter 2 of the book: Regression methods in biostatistics: linear, logistic, survival, and repeated measures models, Vittinghoff et al. The first example to load a dataset is using the The western collaborative group study (WCGS).  We will use tidyverse tools to load (read_csv) and visualize (ggplot).
+
+```{r loading, echo=FALSE}
+library(tidyverse)
+setwd("~/Dropbox/Fdo/ClaseStats/RegresionClass/RegresionR_code")
+# To set the working directory at the user dir 
+wcgs <- read_csv("DataRegressBook/Chap2/wcgs.csv")
+# Loading the WCGS database in wcgs varible
+glimpse(wcgs)
+summary(wcgs)
+```
+  The first line of code loads the library for `tidyverse`, then sets the working directory to pint at my user and the place that I have copyed the data from Vittinghoff's book. Then shows 22 variables in lines (not all the observations) and the summary of the numerical variables, `summary` automatically estimates general statistics for the numerical variables of the dataset. 
+
+## Including Plots
+
+Lets see from the WCGS data a summery of the systolic blod pressure (sbp), followed by a histogram, were the theoretical best possible number of bins was estimated with the formula bins = 1 + 3.3log(3144) that results in about 13, so after using 15 bins, the binwith results in 9.
+Then there is a boxplot of the dbp variable and a scatter plot of the same varible, and finally ggplot is used to manipulate the point characteristics and finally we have the same ploit at figure 2.9 in the book.
+
+```{r sytolic, echo=FALSE}
+summary(wcgs$sbp)
+## to estimate the number of bins (max - min)/#bins
+# #bins 1+3.3log(3144) ~ 13 so using #bins 15
+# binswith 8.8 -> 9
+ggplot(data = wcgs) + geom_histogram(mapping = aes(x = sbp), binwidth = 9.0)
+# to generate fig 2.3 or the systolic blood pressure with ggplot
+ggplot(data = wcgs, aes(y = sbp)) + geom_boxplot()
+# other boxplot comments
+# ggplot(data = wcgs) + geom_bar(mapping = aes(x = sbp, fill = weight))
+# ggplot(data = wcgs) + geom_bar(mapping = aes(x = sbp, fill = weight), position = "dodge")
+ggplot(data = wcgs) + geom_qq(aes(sample = sbp))
+# ggplot(data = wcgs) + geom_qq(aes(sample = 1:310), dist = qt, dparam = list(df=5)) sample, sbp ..theoretical..
+# scatter plot of the sbp data over weight 
+ggplot(data = wcgs) + geom_point(mapping = aes(x = weight, y = sbp))
+# to add a smoothed representative plot figure 2.9 
+ggplot(data = wcgs) + geom_point(mapping = aes(x = weight, y = sbp)) + geom_smooth(mapping = aes(x = weight, y = sbp))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
