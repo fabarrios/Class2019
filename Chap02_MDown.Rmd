@@ -9,9 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Examples Chap02
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The examples for chapter 2
 
 ## Introduction
 
@@ -26,7 +26,7 @@ wcgs <- read_csv("DataRegressBook/Chap2/wcgs.csv")
 glimpse(wcgs)
 summary(wcgs)
 ```
-  The first line of code loads the library for `tidyverse`, then sets the working directory to pint at my user and the place that I have copyed the data from Vittinghoff's book. Then shows 22 variables in lines (not all the observations) and the summary of the numerical variables, `summary` automatically estimates general statistics for the numerical variables of the dataset. 
+  The first line of code loads the library for `tidyverse`, then sets the working directory to point at my user and the directory that I have copyed the data from Vittinghoff's book. Then shows 22 variables in lines (not all the observations) and the summary of the numerical variables, `summary` automatically estimates general statistics for the numerical variables of the dataset. 
 
 ## Including Plots
 
