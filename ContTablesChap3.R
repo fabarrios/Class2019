@@ -1,13 +1,26 @@
 # #############################################################################
 # Contingency tables
 # frequency variables
-# Two-bytwo contngency table for CHD and corneal arcus
-# in the WCGS data set for CHD
+# Table methods for assesing associations between binary outcomes and categorical
+# predictors
+# WCSG to study the Type A behavior pattern (TABP) – “characterized particularly by 
+# excessive drive, aggressiveness, and ambition, frequently in association with a 
+# relatively greater preoccupation with competitive activity, vocational deadlines, 
+# and similar pressures” – is a cause of CHD. Two additional goals, developed later
+# in the study, were (1) to investigate the comparability of formulas developed in 
+# WCGS and in the Framingham Study (FS) for prediction of CHD risk, and (2) to 
+# determine how addition of TABP to an existing multivariate prediction formula 
+# affects ability to select subjects for intervention programs.
 library(tidyverse)
 library(gmodels)
 library(car)
 #
 wcgs <- read_csv(file="DataRegressBook/Chap2/wcgs.csv")
+# In the WCGS study, of interest the relationship between CHD risk and the 
+# presence/absence of corneal arcus senilis among participants upon entry 
+# into the study.
+# Two-bytwo contngency table for CHD and corneal arcus
+# in the WCGS data set for CHD
 tab_arcus <- table(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
 ftab_arcus <- ftable(chd69~arcus~chd69, data= wcgs, dnn = c('CHD','arcus'))
 CrossTable(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
