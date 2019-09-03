@@ -22,10 +22,11 @@ wcgs <- read_csv(file="DataRegressBook/Chap2/wcgs.csv")
 # Two-bytwo contngency table for CHD and corneal arcus
 # in the WCGS data set for CHD
 tab_arcus <- table(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
-ftab_arcus <- ftable(chd69~arcus~chd69, data= wcgs, dnn = c('CHD','arcus'))
-CrossTable(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
-chisq.test(tab_arcus)
+prop.table(tab_arcus)
 # chisq.test(tab_wcgs, simulate.p.value = TRUE)
+chisq.test(tab_arcus)
+ftab_arcus <- ftable(chd69~arcus, data= wcgs, dnn = c('CHD','arcus'))
+CrossTable(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
 
 # Multiple categories
 #
