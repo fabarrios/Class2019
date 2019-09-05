@@ -20,22 +20,34 @@ wcgs <- read_csv(file="DataRegressBook/Chap2/wcgs.csv")
 # presence/absence of corneal arcus senilis among participants upon entry 
 # into the study.
 # Two-bytwo contngency table for CHD and corneal arcus
-# in the WCGS data set for CHD
+# in the WCGS data set for CHD. Table 3.5
 tab_arcus <- table(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
 # ftab_arcus <- ftable(chd69~arcus, data= wcgs, dnn = c('CHD','arcus'))
-CrossTable(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
 (Risk_of_CHD_NOarcus <- tab_arcus[2,1]/(tab_arcus[1,1]+tab_arcus[2,1]))
 (Risk_of_CHD_arcus <- tab_arcus[2,2]/(tab_arcus[2,2]+tab_arcus[1,2]))
 (Risk_arcus <- (tab_arcus[2,1]+tab_arcus[2,2])/(tab_arcus[1,1]+tab_arcus[1,2]+tab_arcus[2,1]+tab_arcus[2,2]))
 chisq.test(tab_arcus)
+# Exess risk is the risk difference Risk - RiskYES P(1) - P(0)
+(ER <- Risk_of_CHD_arcus - Risk_of_CHD_NOarcus)
+# Rekative risk, define as the ratio risk of te condition
+(RR <- Risk_of_CHD_arcus/Risk_of_CHD_NOarcus)
+# and the Odds Ratio. Ratio between the corresponding odds in the two groups
+(OR <- (Risk_of_CHD_arcus/(1 - Risk_of_CHD_arcus))/(Risk_of_CHD_NOarcus/(1 - Risk_of_CHD_NOarcus)))
+#
+#  ER == P(1) - P(0)
+#  RR == P(1)/P(0)
+#  OR == (P(1)/(1 - P(1)))/(P(0)/(1 - P(0)))
+#
+CrossTable(wcgs$chd69, wcgs$arcus, dnn = c('CHD','arcus'))
 # chisq.test(tab_wcgs, simulate.p.value = TRUE)
 
 # Multiple categories
-#
 # for the example in 3.7
-tab_agec <- table(agec~chd69, data=wcgs, dnn = c('CHD', 'agec'))
+(tab_agec <- table(wcgs$chd69, wcgs$agec, dnn = c('CHD', 'agec')))
 chisq.test(tab_agec)
-CrossTable(wcgs$chd69, wcgs$agec, dnn = c('CHD','arcus'))
+CT_tab_agec <- CrossTable(wcgs$chd69, wcgs$agec, dnn = c('CHD','age'))
+ER_agec <- (CT_tab_agec$t[2,5]/(CT_tab_agec$t[1,5] + CT_tab_agec$t[2,5])) - (CT_tab_agec$t[2,1]/(CT_tab_agec$t[1,1]+CT_tab_agec$t[2,1]))
+RR_agec <- (CT_tab_agec$t[2,5]/(CT_tab_agec$t[1,5] + CT_tab_agec$t[2,5])) / (CT_tab_agec$t[2,1]/(CT_tab_agec$t[1,1]+CT_tab_agec$t[2,1]))
 # Fisher exact test, for small data table Chp 3 example table 3.6 Female
 # partner's HIV status by AIDS dignosis of male partner
 #
