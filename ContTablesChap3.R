@@ -15,6 +15,7 @@ library(tidyverse)
 library(gmodels)
 library(car)
 #
+
 wcgs <- read_csv(file="DataRegressBook/Chap2/wcgs.csv")
 # In the WCGS study, of interest the relationship between CHD risk and the 
 # presence/absence of corneal arcus senilis among participants upon entry 
