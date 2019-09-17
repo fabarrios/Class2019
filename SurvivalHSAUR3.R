@@ -22,14 +22,14 @@ plot(survfit(Surv(time, event) ~ group, data = g4), main = "Grade IV Glioma", lt
 # a log-rank test
 survdiff(Surv(time, event) ~ group, data = g3)
 # to runn an exact test Coin has a permutation funtion that can calculate an exact test
-surv_test(Surv(time, event) ~ group, data = g3, distribution = "exact")
-surv_test(Surv(time, event) ~ group, data = g4, distribution = "exact")
+# defunct surv_test(Surv(time, event) ~ group, data = g3, distribution = "exact")
+# defunct surv_test(Surv(time, event) ~ group, data = g4, distribution = "exact")
 # More interesting question is the novel Radioimmunotherapy is superior for both groups
 # is done stratifying od blocking (by block) with respect to tumor grading 
-surv_test(Surv(time, event) ~ group | histology, data = glioma, distribution = approximate(B = 10000))
+# defunct surv_test(Surv(time, event) ~ group | histology, data = glioma, distribution = approximate(B = 10000))
 
 # probability estimation with exact distribution
 logrank_test(Surv(time, event) ~ group, data = g3, distribution = "exact")
 logrank_test(Surv(time, event) ~ group, data = g4, distribution = "exact")
 # To answer the question whether the survival times differ for grade III patients 
-logrank_test(Surv(time, event) ~ group | histology, data = glioma, distribution = approximate(B = 10000))
+logrank_test(Surv(time, event) ~ group | histology, data = glioma, distribution = approximate(nresample = 10000L))
