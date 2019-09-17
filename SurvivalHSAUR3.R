@@ -1,10 +1,7 @@
 # Example from Glioma Radioimmunotherapy
 # Chapter 11 HSAUR 3
 #
-library(tidyverse)
-library(survival)
-library(survminer)
-library(coin)
+
 
 data("glioma", package = "coin")
 
@@ -44,5 +41,6 @@ summary(mod.allison)
 
 # car has an ANOVA to estimate Type-II likelihood test for Cox models
 Anova(mod.allison)
-plot(survfit(mod.allison), ylim = c(0.7, 1), xlab="Weeks", ylab="Proportion Not Rearrested"
- 
+plot(survfit(mod.allison), xlab="Weeks", ylab="Proportion Not Rearrested")
+plot(survfit(mod.allison), ylim = c(0.7, 1), xlab="Weeks", ylab="Proportion Not Rearrested")
+
