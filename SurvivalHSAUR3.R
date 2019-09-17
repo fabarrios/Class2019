@@ -33,3 +33,16 @@ logrank_test(Surv(time, event) ~ group, data = g3, distribution = "exact")
 logrank_test(Surv(time, event) ~ group, data = g4, distribution = "exact")
 # To answer the question whether the survival times differ for grade III patients 
 logrank_test(Surv(time, event) ~ group | histology, data = glioma, distribution = approximate(nresample = 10000L))
+
+#Cox proportional-hazards regression
+#library ("carData")
+args(coxph)
+Rossi[1:5, 1:10]
+
+mod.allison <- coxph(Surv(week, arrest) ~ fin + age + race + wexp + mar + paro + prio, data = Rossi)
+summary(mod.allison)
+
+# car has an ANOVA to estimate Type-II likelihood test for Cox models
+Anova(mod.allison)
+plot(survfit(mod.allison), ylim = c(0.7, 1), xlab="Weeks", ylab="Proportion Not Rearrested"
+ 
