@@ -45,8 +45,8 @@ ggsurvplot(
   pval = TRUE,                     # Add p-value from log-rank test
   risk.table = TRUE,               # Add risk table
   risk.table.col = "strata",       # Risk table color by groups
-  legend.labs = c("Control","RIT"),# Change legend labels
-  risk.table.height = 0.25,        # Useful to change when you have multiple groups
+  legend.labs = c("Control","Treated"),# Change legend labels
+  risk.table.height = 0.30,        # Useful to change when you have multiple groups
   surv.median.line = "hv",         # add the median survival pointer.
   ggtheme = theme_bw()             # Change ggplot2 theme
 )
@@ -64,14 +64,15 @@ conf.int = TRUE,             # Add confidence interval
 pval = TRUE,                 # Add p-value from log-rank test
 risk.table = TRUE,           # Add risk table
 risk.table.col = "strata",   # Risk table color by groups
-legend.labs = c("Control","RIT"),    # Change legend labels
-risk.table.height = 0.25,    # Useful to change when you have multiple groups
+legend.labs = c("Control","Treated"),    # Change legend labels
+risk.table.height = 0.30,    # Useful to change when you have multiple groups
 surv.median.line = "hv",     # add the median survival pointer.
-ggtheme = theme_bw()      # Change ggplot2 theme
+ggtheme = theme_bw()         # Change ggplot2 theme
 )
 
 #Cox proportional-hazards regression
 #library ("carData")
+data("Rossi", package = "carData")
 args(coxph)
 Rossi[1:5, 1:10]
 # Cox model and estimation of model tests
@@ -87,18 +88,20 @@ plot(survfit(mod.allison), ylim = c(0.7, 1), xlab="Weeks", ylab="Proportion Not 
 ggsurvplot(
 survfit(mod.allison), 
 data = Rossi, 
-size = 0.5,                  # change line size
-linetype = c("dashed", "solid"), # different line type
-palette = "lancet",          # color red, blue or custom palettes lancet
-title   = "Rearrest data", # plot main title
-xlab = "Weeks", # customize X axis label.
+size = 0.5,                      # change line size
+linetype = c("solid","dashed"), # different line type
+palette = "simpsons",              # color palette
+title   = "Rossi data",          # plot main title
+xlab = "Weeks",                  # customize X axis label.
+ylab = "Proportion Not Rearrested", # customize Y axis label
+ylim = c(0.7, 1),             # customize Y limits
 conf.int = TRUE,             # Add confidence interval
-pval = TRUE,                 # Add p-value from log-rank test
-risk.table = TRUE,           # Add risk table
+pval = FALSE,                 # Add p-value from log-rank test
+risk.table = FALSE,           # Add risk table
 risk.table.col = "strata",   # Risk table color by groups
-legend.labs = c("CoxModel","Envelope"),    # Change legend labels
+surv.median.line = "none",
+legend = "none",
 risk.table.height = 0.25,    # Useful to change when you have multiple groups
-surv.median.line = "hv",     # add the median survival pointer.
 ggtheme = theme_bw()         # Change ggplot2 theme
 )
 
