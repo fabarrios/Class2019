@@ -4,6 +4,7 @@
 library("tidyverse")
 library("car")
 library("survival")
+library("survminer")
 library("coin")
 
 data("glioma", package = "coin")
