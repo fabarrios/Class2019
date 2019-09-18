@@ -44,3 +44,11 @@ Anova(mod.allison)
 plot(survfit(mod.allison), xlab="Weeks", ylab="Proportion Not Rearrested")
 plot(survfit(mod.allison), ylim = c(0.7, 1), xlab="Weeks", ylab="Proportion Not Rearrested")
 
+# To study the fin variable
+Rossi.fin <- with (Rossi, data.frame(fin=c(0, 1), age=rep(mean(age), 2), race=rep(mean(race == "other"), 2),
+                                     wexp=rep(mean(wexp == "yes"), 2), mar=rep(mean(mar == "not married"), 2),
+                                     paro=rep(mean(paro == "yes"), 2), prio=rep(mean(prio), 2)))
+plot(survfit(mod.allison, newdata=Rossi.fin), conf.int=TRUE, lty=c(1,2), ylim=c(0.6, 1), xlab="Weeks", 
+     ylab="Proportion Not Rearrested")
+legend("bottomleft", legend=c("fin - no", "fin = yes"), lty=c(1, 2), insert=0.02)
+
