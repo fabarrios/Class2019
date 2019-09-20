@@ -113,5 +113,23 @@ plot(survfit(mod.allison, newdata=Rossi.fin), conf.int=TRUE, lty=c(1,2), ylim=c(
      ylab="Proportion Not Rearrested")
 legend("bottomleft", legend=c("fin - no", "fin = yes"), lty=c(1, 2), insert=0.02)
 
-
+ggsurvplot(
+  survfit(mod.allison, newdata=Rossi.fin), 
+  data = Rossi, 
+  size = 0.5,                     # change line size
+  linetype = c("solid","dashed"), # different line type
+  palette = "lancet",             # color palette
+  title   = "Rossi data",         # plot main title
+  xlab = "Weeks",                 # customize X axis label.
+  ylab = "Proportion Not Rearrested", # customize Y axis label
+  ylim = c(0.7, 1),           # customize Y limits
+  conf.int = TRUE,            # Add confidence interval
+  pval = FALSE,               # Add p-value from log-rank test
+  risk.table = FALSE,         # Add risk table
+  risk.table.col = "strata",  # Risk table color by groups
+  surv.median.line = "none",
+  legend = "none",
+  risk.table.height = 0.25,   # Useful to change when you have multiple groups
+  ggtheme = theme_bw()        # Change ggplot2 theme
+  )
 
