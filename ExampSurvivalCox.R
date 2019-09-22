@@ -7,6 +7,7 @@ library("survival")
 library("survminer")
 library("coin")
 
+
 data("glioma", package = "coin")
 
 # first we split the screen in two
