@@ -7,7 +7,6 @@ library("survival")
 library("survminer")
 library("coin")
 
-
 data("glioma", package = "coin")
 
 # first we split the screen in two
@@ -133,4 +132,40 @@ ggsurvplot(
   risk.table.height = 0.25,   # Useful to change when you have multiple groups
   ggtheme = theme_bw()        # Change ggplot2 theme
   )
+
+# Efects of hormonal treatment in women suffering from node-possitive breast cancer, from 
+# the German Breast Cancer Study Group 2, GBSG2.  The hypothetical prognotic factors are age,
+# menopausal status, tumor size, tumor grade, number of possitive lymph nodes, progesterone 
+# receptor, estrogen receptor, and if hormonal therapy was applied.
+# GBSG2 data from the TH.data package.
+
+data("GBSG2", package = "TH.data")
+ggsurvplot(
+  survfit(Surv(time, cens) ~ horTh, data = GBSG2), 
+  data = GBSG2, 
+  size = 0.5,                     # change line size
+  linetype = c("solid","dashed"), # different line type
+  palette = "lancet",             # color palette
+  title   = "Hormonal Therapy",   # plot main title
+  xlab = "Survival Time in Days", # customize X axis label.
+  ylab = "Probability",           # customize Y axis label
+  ylim = c(0.0, 1.0),             # customize Y limits
+  conf.int = FALSE,            # Add confidence interval
+  pval = FALSE,               # Add p-value from log-rank test
+  risk.table = FALSE,         # Add risk table
+  risk.table.col = "strata",  # Risk table color by groups
+  surv.median.line = "none",
+  legend.labs = c("No","Yes"),
+  risk.table.height = 0.25,   # Useful to change when you have multiple groups
+  ggtheme = theme_bw()        # Change ggplot2 theme
+  )
+
+GBSG2_coxph <- coxph(Surv(time, cens) ~ ., data = GBSG2)
+summary(GBSG2_coxph)
+ci <- confint(GBSG2_coxph)
+exp(cbind(coef(GBSG2_coxph), ci))["horThyes",]
+# exp for the Cox regression coeficient for hormonal therapy
+(GBSG2_zph <- cox.zph(GBSG2_coxph))
+
+plot(GBSG2_zph, var = "age")
 
