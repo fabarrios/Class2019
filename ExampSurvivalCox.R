@@ -168,4 +168,24 @@ exp(cbind(coef(GBSG2_coxph), ci))["horThyes",]
 (GBSG2_zph <- cox.zph(GBSG2_coxph))
 
 plot(GBSG2_zph, var = "age")
+plot(GBSG2_zph, var = "tsize")
+plot(GBSG2_zph, var = "pnodes")
 
+# Martingale residuas areestimated by the residuals 
+layout(matrix(1:3, ncol = 3))
+res <- residuals(GBSG2_coxph)
+plot(res ~ age, data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "Martingale Residuals")
+abline(h = 0, lty = 3)
+plot(res ~ pnodes, data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
+abline(h = 0, lty = 3)
+plot(res ~ log(progrec), data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
+abline(h = 0, lty = 3)
+
+# In R tree-structure regression models are aplicable to censored responses in survival analysis. The
+# ctree function from package partykit
+
+GBSG2_ctree <- ctree(Surv(time, cens) ~ ., data = GBSG2)
+plot(GBSG2_ctree)
+
+# in the tree-structure regression the most important variable is the pnodes, number of possitve lymph 
+# nodes, corresponding to the p-value associated with the varable in the Cox regression.
