@@ -174,12 +174,12 @@ plot(GBSG2_zph, var = "pnodes")
 # Martingale residuas areestimated by the residuals 
 layout(matrix(1:3, ncol = 3))
 res <- residuals(GBSG2_coxph)
-plot(res ~ age, data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "Martingale Residuals")
-abline(h = 0, lty = 3)
-plot(res ~ pnodes, data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
-abline(h = 0, lty = 3)
-plot(res ~ log(progrec), data - GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
-abline(h = 0, lty = 3)
+plot(res ~ age, data = GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "Martingale Residuals")
+abline(h = 0, lty = 2)
+plot(res ~ pnodes, data = GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
+abline(h = 0, lty = 2)
+plot(res ~ log(progrec), data = GBSG2, ylim = c(-2.5, 1.5), pch = ".", ylab = "")
+abline(h = 0, lty = 2)
 
 # In R tree-structure regression models are aplicable to censored responses in survival analysis. The
 # ctree function from package partykit
