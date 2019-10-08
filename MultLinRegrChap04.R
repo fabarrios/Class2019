@@ -1,7 +1,13 @@
 # Multiple linear regression
+# 
 #
-# Chapter 4 examples. 4.1
+# Examples from the HERS data set in the chapter 4
+library(car)
+library(emmeans)
+library(multcomp)
 library(tidyverse)
+
+# Chapter 4 examples. 4.1
 hers <- read_csv("DataRegressBook/Chap3/hersdata.csv")
 hers_nodi <- filter(hers, diabetes == "no")
 # Simple linear model with HERS data for women without diabetes
@@ -10,13 +16,14 @@ ggplot(data = hers_nodi, mapping = aes(x = exercise, y = glucose)) +
 # The simple linear model adjust the exercise like in table 4.1
 hers_nodi_Fit <- lm(glucose ~ exercise, data = hers_nodi)
 summary(hers_nodi_Fit)
+S(hers_nodi_Fit)
+
 # and for obtaining the table 4.2 with multiple linear model
 hers_nodi_Fit2 <- lm(glucose ~ exercise + age + drinkany + BMI, data = hers_nodi)
 summary(hers_nodi_Fit2)
 
 # Chap 4  4.4
 # we are usingthe same file hers <- read_csv("DataRegressBook/Chap3/hersdata.csv")
-hers_nodi <- filter(hers, diabetes == "no")
 # Multilever categorical multiple linear model for women without diebetes
 # To get table 4.4 Regression of physical activity on glucose
 # hers_nodi$physact <- factor(hers_nodi$physact)
@@ -25,6 +32,7 @@ hers_nodi <- mutate(hers_nodi, physact = factor(physact, levels=c("much less act
 levels(hers_nodi$physact)
 ggplot(data = hers_nodi, mapping = aes(x = physact, y = glucose)) + geom_boxplot(na.rm = TRUE)
 glucose_fit_act <- lm(glucose ~ physact, data = hers_nodi)
+
 # betaStar <- coef(glucose_fit_act)
 # betaStar
 # Xstar <- model.matrix(glucose ~ physact, data = hers_nodi)
@@ -38,7 +46,9 @@ layout(matrix(1:4, nrow = 2))
 plot(glucose_fit_act)
 
 glucose_lstsqr <- emmeans(glucose_fit_act, "physact")
+
 # Contrasts
+# contrasts using the adjusted parameters
 Contrasts_glu = list(MAvsLA          = c(-1, -1, 0,  1,  1),
                      MAvsLAforMuch   = c(-1,  0, 0,  0,  1),
                      MAvsLAforSome   = c( 0, -1, 0,  1,  0),
