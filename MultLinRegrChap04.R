@@ -6,6 +6,7 @@ library(car)
 library(emmeans)
 library(multcomp)
 library(tidyverse)
+# we will use the library effects also, it uses MASS
 
 # Chapter 4 examples. 4.1
 hers <- read_csv("DataRegressBook/Chap3/hersdata.csv")
@@ -48,7 +49,11 @@ plot(glucose_fit_act)
 glucose_lstsqr <- emmeans(glucose_fit_act, "physact")
 
 # Contrasts
-# contrasts using the adjusted parameters
+# contrasts using the adjusted parameters for a categorical variable with several categories
+# or multipe oridinals
+# R call categorical variables factors and their categories levels
+# so we have factors with different levels
+# in these cases we can estimate contrasts of the adjueted parameters.
 Contrasts_glu = list(MAvsLA          = c(-1, -1, 0,  1,  1),
                      MAvsLAforMuch   = c(-1,  0, 0,  0,  1),
                      MAvsLAforSome   = c( 0, -1, 0,  1,  0),
@@ -79,3 +84,42 @@ Cont_glucose_Matriz
 G = glht(glucose_fit_act, linfct = mcp(physact = Cont_glucose_Matriz))
 G$linfct
 summary(G, test=adjusted("single-step"))
+
+# From the CAR book exmples of chap 4.
+# Multiple linear regression, extends the regular linear regression to more than one predictor.
+# From the Canadian occupational-prestige data
+summary(Prestige)
+# a multiple linear model of prestige on education and the log base 2 of the salary and women.
+# result in partial slopes
+prestige.mod <- lm(prestige ~ education + log2(income) + women,
+    data=Prestige)
+S(prestige.mod)
+
+# predictor effect plots, graphs that can be used to visualize the effect of each of the predictors
+# in a fitted predictor model.
+# effects library uses the lattice package, that uses theme that controls many grafical elements like line type 
+# and colors, etc. help("effectsTheme")
+library(effects)
+plot(predictorEffects(prestige.mod))
+# Factors in linear regression
+# Cathegorical variables 
+Prestige$type
+class(Prestige$type)
+
+Prestige$type <- factor(Prestige$type, levels=c("bc", "wc", "prof"))
+levels(Prestige$type)
+
+# Linear model with one factor: one-way ANOVA
+# The simplest linear model with factors known as "one-way analisis of variance"
+# one factor and no numeric predictors.
+summary(Baumann[, c(1, 6)]) 
+
+xtabs(~ group, data=Baumann)
+
+Tapply(post.test.3 ~ group, mean, data=Baumann)
+Tapply(post.test.3 ~ group, sd, data=Baumann)
+
+plot(post.test.3 ~ group, data=Baumann, xlab="Group",
+    ylab="Reading Score")
+
+S(baum.mod.1 <- lm(post.test.3 ~ group, data=Baumann))
