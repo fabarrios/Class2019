@@ -4,7 +4,6 @@
 # Examples from the HERS data set in the chapter 4
 library(car)
 library(emmeans)
-library(multcomp)
 library(tidyverse)
 
 # we will use the library effects also, it uses lattice
@@ -174,6 +173,10 @@ S(LDL_fit_all)
 # Now for the group with Hormone Therapy the complete HERS cohort
 # Model of cholesterol LDL and the effect of Hormone Therapy (HT) and
 # Statin use model is at the one year visit (to se the HT effect)
+
+library(MASS)
+library(multcomp)
+
 hers <- mutate(hers, HT = factor(HT))
 hers <- hers %>% mutate(HT = relevel(HT, ref = "placebo"))
 
