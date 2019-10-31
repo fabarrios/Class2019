@@ -10,6 +10,7 @@ summary(SLID)
 nrow(SLID)
 
 scatterplot(log(wages) ~ age, data=SLID, subset = age >= 18 & age <= 65, pch=".")
+# ggplot(data = SLID) + geom_point(mapping = aes(x = age, y = log(wages)))
 
 mod.quad.1 <- lm(log(wages) ~ poly(age, 2, raw=TRUE), data=SLID, subset = age >= 18 & age <= 65)
 S(mod.quad.1)
@@ -41,3 +42,5 @@ hers <- mutate(hers, drinkany = factor(drinkany))
 
 modHDL_spline <- lm(HDL ~ ns(BMI, df=5) + age10 + nonwhite + smoking + drinnkany, data = hers)
 S(modHDL_spline)
+# scatter plot of the sbp data over weight 
+ggplot(data = hers) + geom_point(mapping = aes(x = BMI, y = HDL))
