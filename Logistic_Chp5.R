@@ -5,10 +5,11 @@
 # to asses ESR as useful diagnostic tool.
 # ESR > 20mm/hr for proteins fibrinogen and gamma globulin, using glm
 
-library(tidyverse)
 library(HSAUR2)
 library(emmeans)
 library(multcomp)
+library(car)
+library(tidyverse)
 
 # Using plasma data from HSAUR
 
@@ -98,7 +99,8 @@ abline(h = 0, lty = 2)
 
 #
 # Examples Chp 5 
-# from the data WCGS, the modle for the Cardiac H Diseace CHD table 5.2
+# from the data WCGS, the modle for the Coronary Heart Diseace CHD table 5.2
+# first we will analyze the influence with age.
 
 wcgs <- read_csv(file="DataRegressBook/Chap2/wcgs.csv")
 
@@ -106,27 +108,39 @@ wcgs %>%
     select(chd69, age) %>%
     summary()
 
+# Data at follow-up 69 chd69
 wcgs <- mutate(wcgs, chd69 = factor(chd69))
 
 CHD_glm01 <- glm(chd69 ~ age, data = wcgs, family = binomial())
-summary(CHD_glm01)
+S(CHD_glm01)
+
+# We can see for one year change 55 to 56 years
+# log[P(56)/(1-P(56))] - log[P(55)/(1-P(55))]
+# with log[P(x)/(1-P(x))] = bo + b1 x
+# bo = -5.940  and b1 = 0.074
+
+(diff_in_risk = (-5.940 + 0.074*56) - (-5.940 + 0.074*55))
 
 confint(CHD_glm01, parm = "age")
+
+# The corresponding odds ratio for any one year increase in age
 exp(coef(CHD_glm01)["age"])
+
+# Model test
 anova(CHD_glm01, test = "Chisq")
 
 # For the model of CHD risc for the presence or arcus table 5.4
+
 wcgs %>%
     select(arcus) %>%
     summary()
 
-wcgs %>% mutate(wcgs, arcus = factor(arcus))
+wcgs <- mutate(wcgs, arcus = factor(arcus))
 
 CHDarc_glm01 <- glm(chd69 ~ arcus, data = wcgs, family = binomial())
-
 # CHDarc_glm01 <- glm(chd69 ~ arcus, data = filter(wcgs, !is.na(arcus)), family = binomial())
 
-summary(CHDarc_glm01)
+S(CHDarc_glm01)
 
 exp(coef(CHDarc_glm01)["arcus"])
 exp(confint(CHDarc_glm01, parm = "arcus"))
@@ -150,13 +164,15 @@ wcgs %>%
     theme_bw()
 
 CHDarc_glm02 <- glm(chd69 ~ arcus_f, data = wcgs, family = binomial())
-summary(CHDarc_glm01)
+S(CHDarc_glm02)
 
-# For the example in table 5.5 Logistic model of CHD and age as categorical factor
+# For the example in table 5.5 
+# Logistic model of CHD and age as  multilevel categorical factor
+# varikable agec
 
 CHDagec_glm <- glm(chd69 ~ agec , data = wcgs, family = binomial())
-summary(CHDagec_glm)
-exp(coef(CHDagec_glm))
+S(CHDagec_glm)
+# exp(coef(CHDagec_glm))
 
 #
 CHDagec_lstsqr <- emmeans(CHDagec_glm, "agec")
@@ -168,6 +184,7 @@ Contrasts_CHDagec = list(oneVSbase   = c(-1, 1, 0, 0, 0),
                          fourVSbase  = c(-1, 0, 0, 0, 1))
 
 # Following estimate the coeficients contrasts in the log odds ratio
+# answers given in log odds ratio (not the response) scale
 
 contrast(CHDagec_lstsqr, Contrasts_CHDagec, adjust="sidak")
 contrast(CHDagec_lstsqr, Contrasts_CHDagec, adjust="bonferroni")
@@ -176,10 +193,10 @@ contrast(CHDagec_lstsqr, Contrasts_CHDagec, adjust="bonferroni")
 # For multiple logistic model for CHD risk
 
 CHDmult_glm <- glm(chd69 ~ age + chol + bmi + sbp + smoke , data = wcgs, family = binomial())
-summary(CHDmult_glm)
+S(CHDmult_glm)
 
 # For chp 5 the example of interactions for continuous and categorical variables.
 # example of table 5.16 with age and arcus, with age as continuous
 
 CHDaa_glm <- glm(chd69 ~ arcus * age , data = wcgs, family = binomial())
-summary(CHDaa_glm)
+S(CHDaa_glm)
