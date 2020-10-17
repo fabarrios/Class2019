@@ -22,7 +22,6 @@ t-Test example presented in Tabel 3.1 of the t-Test of difference in average glu
 setwd("~/Dropbox/Fdo/ClaseStats/RegresionClass/RegresionR_code")
 # To set the working directory at the user dir
 library(tidyverse)
-
 hers <- read_csv("DataRegressBook/Chap3/hersdata.csv")
 # Loading the HERS database in hers varible
 summary(hers)
@@ -36,7 +35,7 @@ t.test(glucose[hers$diabetes == "no"] ~ exercise[hers$diabetes == "no"], data=he
 ## Including Plots
 
 
-```{r sytolic, echo=FALSE}
+```{r systolic, echo=FALSE}
 summary(hers$diabetes)
 ggplot(data = hers, mapping = aes(x = exercise, y = glucose)) + geom_boxplot() + facet_grid( . ~ diabetes)
 ```
