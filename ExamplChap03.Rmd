@@ -28,12 +28,10 @@ summary(hers)
 boxplot(glucose ~ diabetes, data=hers)
 # For the 
 boxplot(glucose[hers$diabetes == "no"] ~ exercise[hers$diabetes == "no"], alternative="two.sided", data=hers)
-
 t.test(glucose[hers$diabetes == "no"] ~ exercise[hers$diabetes == "no"], data=hers, alternative="two.sided", mu=0, paired=FALSE, var.equal=TRUE)
 ```
 
 ## Including Plots
-
 
 ```{r systolic, echo=FALSE}
 summary(hers$diabetes)
