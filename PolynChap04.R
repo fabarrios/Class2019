@@ -40,7 +40,9 @@ hers <- mutate(hers, nonwhite = factor(nonwhite))
 hers <- mutate(hers, smoking = factor(smoking))
 hers <- mutate(hers, drinkany = factor(drinkany))
 
-modHDL_spline <- lm(HDL ~ ns(BMI, df=5) + age10 + nonwhite + smoking + drinnkany, data = hers)
+modHDL_spline <- lm(HDL ~ ns(BMI, df=5) + age10 + nonwhite + smoking + drinkany, data = hers)
 S(modHDL_spline)
+confint(modHDL_spline)
 # scatter plot of the sbp data over weight 
+dfbetas(modHDL_spline)
 ggplot(data = hers) + geom_point(mapping = aes(x = BMI, y = HDL))
